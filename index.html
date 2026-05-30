@@ -512,10 +512,53 @@
                 <div class="section-divider"></div>
             </div>
             <div class="blog-grid reveal" id="blogGrid">
-                <!-- Injected by JS -->
+                <!-- Article 1 -->
+                <div class="blog-card" data-article="1">
+                    <div class="blog-card-image" style="background: linear-gradient(135deg, #f5e6e0, #e8d5cd);">
+                        <span class="blog-emoji">💍</span>
+                    </div>
+                    <div class="blog-card-body">
+                        <span class="blog-card-tag">新娘妆容</span>
+                        <h4>2026新娘妆容趋势：清透裸感高级妆</h4>
+                        <p>告别厚重假面感，今年最火的新娘妆以清透自然为主，做到"化了像没化，但美了十倍"...</p>
+                    </div>
+                    <div class="blog-card-footer"><i class="far fa-calendar"></i> 2026-05-20 · 阅读 2.3k</div>
+                </div>
+                <!-- Article 2 -->
+                <div class="blog-card" data-article="2">
+                    <div class="blog-card-image" style="background: linear-gradient(135deg, #e0f0f5, #c8dce5);">
+                        <span class="blog-emoji">☀️</span>
+                    </div>
+                    <div class="blog-card-body">
+                        <span class="blog-card-tag">持妆技巧</span>
+                        <h4>夏季持妆全攻略：8小时不脱妆的秘密</h4>
+                        <p>高温出油是妆容的头号杀手。从妆前护肤到定妆步骤，Wendy公开专业化妆师的不脱妆秘籍...</p>
+                    </div>
+                    <div class="blog-card-footer"><i class="far fa-calendar"></i> 2026-05-08 · 阅读 1.8k</div>
+                </div>
+                <!-- Article 3 -->
+                <div class="blog-card" data-article="3">
+                    <div class="blog-card-image" style="background: linear-gradient(135deg, #f0e8f0, #e0d0e0);">
+                        <span class="blog-emoji">✨</span>
+                    </div>
+                    <div class="blog-card-body">
+                        <span class="blog-card-tag">妆前护肤</span>
+                        <h4>妆前护肤黄金法则：底妆服帖一整天的秘诀</h4>
+                        <p>好的妆容七分靠护肤。了解正确的妆前步骤和产品搭配，让你的底妆宛若天生好皮肤...</p>
+                    </div>
+                    <div class="blog-card-footer"><i class="far fa-calendar"></i> 2026-04-28 · 阅读 3.1k</div>
+                </div>
             </div>
         </div>
     </section>
+
+    <!-- Blog Article Modal -->
+    <div class="modal-overlay" id="blogModal">
+        <div class="modal-content blog-modal-content">
+            <button class="modal-close" id="closeBlogModal">&times;</button>
+            <div class="blog-article" id="blogArticleContent"></div>
+        </div>
+    </div>
 
     <!-- FAQ -->
     <section class="faq section-padding" id="faq">

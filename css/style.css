@@ -1504,6 +1504,83 @@ input, select, textarea { font-family: inherit; }
     align-items: center;
     gap: 6px;
 }
+.blog-emoji { font-size: 3rem; }
+
+/* --- Blog Article Modal --- */
+.blog-modal-content {
+    max-width: 780px;
+    max-height: 85vh;
+    overflow-y: auto;
+    text-align: left;
+    padding: 0;
+}
+.blog-article { padding: 48px 44px; }
+.blog-article .blog-art-header { margin-bottom: 32px; }
+.blog-article .blog-art-tag {
+    display: inline-block;
+    font-size: 0.75rem;
+    letter-spacing: 3px;
+    color: var(--color-primary);
+    font-weight: 600;
+    margin-bottom: 12px;
+}
+.blog-article .blog-art-title {
+    font-family: 'Georgia', 'Times New Roman', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    line-height: 1.4;
+    margin-bottom: 12px;
+    color: var(--color-text);
+}
+.blog-article .blog-art-meta {
+    font-size: 0.82rem;
+    color: var(--color-text-lighter);
+    display: flex;
+    gap: 16px;
+    align-items: center;
+}
+.blog-article .blog-art-body { line-height: 2; color: var(--color-text); }
+.blog-article .blog-art-body h3 {
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin: 28px 0 12px;
+    color: var(--color-primary-dark);
+}
+.blog-article .blog-art-body p {
+    margin-bottom: 14px;
+    color: #3a3a3e;
+}
+.blog-article .blog-art-body ul {
+    list-style: disc;
+    padding-left: 20px;
+    margin-bottom: 14px;
+}
+.blog-article .blog-art-body ul li {
+    margin-bottom: 6px;
+    color: #3a3a3e;
+}
+.blog-article .blog-art-body .tip-box {
+    background: rgba(201,169,110,0.08);
+    border-left: 3px solid var(--color-primary);
+    padding: 16px 20px;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    margin: 20px 0;
+    font-size: 0.92rem;
+}
+.blog-article .blog-art-body .tip-box strong {
+    color: var(--color-primary-dark);
+    display: block;
+    margin-bottom: 4px;
+}
+.blog-article .blog-art-cta {
+    margin-top: 32px;
+    padding: 24px;
+    background: var(--color-bg-light);
+    border-radius: var(--radius-md);
+    text-align: center;
+}
+.blog-article .blog-art-cta p { margin-bottom: 12px; color: var(--color-text-light); }
+.blog-article .blog-art-cta .btn-primary { margin: 0 auto; }
 
 /* --- FAQ --- */
 .faq-list {

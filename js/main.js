@@ -921,49 +921,150 @@ function stopTestimonialAuto() {
 $('#testimonialsCarousel').addEventListener('mouseenter', stopTestimonialAuto);
 $('#testimonialsCarousel').addEventListener('mouseleave', startTestimonialAuto);
 
-// ============ BLOG CARDS ============
-const blogPosts = [
-    {
+// ============ BLOG ARTICLES ============
+const blogArticles = {
+    1: {
         tag: '新娘妆容',
-        title: '2026新娘妆容趋势：高级感轻透妆',
-        excerpt: '告别厚重假面感，今年最流行的新娘妆容以清透自然为主，强调肌肤本身的光泽感...',
-        date: '2026-05-15',
-        color1: '#f5e6e0', color2: '#e8d5cd', icon: '💍'
-    },
-    {
-        tag: '化妆技巧',
-        title: '夏季持妆秘籍：8小时不脱妆的秘密',
-        excerpt: '夏天到了，如何让妆容在高温下持久服帖？Wendy分享专业持妆技巧，从妆前护肤到定妆步骤全解析...',
-        date: '2026-05-08',
-        color1: '#e0f0f5', color2: '#c8dce5', icon: '☀️'
-    },
-    {
-        tag: '护肤指南',
-        title: '妆前护肤的黄金法则：让妆容更服帖',
-        excerpt: '好的妆容从护肤开始。了解妆前护肤的正确步骤和产品选择，让你的妆容质感提升一个档次...',
-        date: '2026-04-28',
-        color1: '#f0e8f0', color2: '#e0d0e0', icon: '✨'
-    },
-];
+        title: '2026新娘妆容趋势：清透裸感高级妆',
+        date: '2026年5月20日',
+        reads: '2.3k',
+        body: `
+            <p>准备结婚的准新娘们一定都在纠结：婚礼当天到底化什么妆？2026年的新娘妆容趋势已经非常明朗——<strong>清透裸感高级妆</strong>。告别厚重假面感和过度修图式化妆，今年流行的是"化了像没化，但就是美了十倍"的高级妆感。</p>
 
-function renderBlogPosts() {
-    const grid = $('#blogGrid');
-    if (!grid) return;
-    grid.innerHTML = blogPosts.map(post => `
-        <div class="blog-card">
-            <div class="blog-card-image" style="background: linear-gradient(135deg, ${post.color1}, ${post.color2});">
-                <span style="font-size:3rem;">${post.icon}</span>
-            </div>
-            <div class="blog-card-body">
-                <span class="blog-card-tag">${post.tag}</span>
-                <h4>${post.title}</h4>
-                <p>${post.excerpt}</p>
-            </div>
-            <div class="blog-card-footer">
-                <i class="far fa-calendar"></i> ${post.date}
-            </div>
-        </div>
-    `);
+            <h3>趋势一：原生光泽肌</h3>
+            <p>底妆不再追求完美无瑕的哑光遮盖，而是强调肌肤本身的通透光泽感。关键在于妆前保湿打底要充足，选择轻薄的液态粉底或气垫，用湿润的美妆蛋少量多次拍开，打造"天生好皮"的质感。局部瑕疵用遮瑕膏精准遮盖，保留面部自然的纹理和光泽。</p>
+            <div class="tip-box"><strong>💡 Wendy的小提示</strong>妆前敷一片保湿面膜，等待5分钟后按摩吸收再上妆，底妆服帖度能提升一倍。</div>
+
+            <h3>趋势二：柔雾感眼妆</h3>
+            <p>浓烈的烟熏妆已经退场，取而代之的是柔和的雾感眼妆。选用奶茶色、杏仁色、干枯玫瑰色系的眼影，大面积晕染在眼窝，边缘过渡自然，没有明显的色块边界。眼线也以深棕色替代纯黑色，用眼线胶笔画出内眼线后再用小刷子晕开，眼神温柔又有神。</p>
+            <p>假睫毛方面，不再追求夸张浓密，而是选择单簇的仙子毛分段粘贴在眼尾，自然拉长眼型。</p>
+
+            <h3>趋势三：原生感眉毛</h3>
+            <p>野生眉依然是主流，但2026年更强调"梳理感"而非"描画感"。用透明的眉蜡或眉皂顺着眉毛生长方向梳理定型，空缺处用极细眉笔一根根补画，保留毛流感。眉色选择比发色浅一度的灰棕色最自然。</p>
+
+            <h3>趋势四：水光腮红唇</h3>
+            <p>腮红和唇妆统一色系是今年的核心法则。选择豆沙粉、蜜桃色或肉桂色的腮红膏，用手指拍在苹果肌并向上晕开到太阳穴位置，再用同色系用在嘴唇上，整体妆容和谐统一。唇妆偏好水光感的唇釉或唇蜜，饱满水润。</p>
+
+            <h3>Wendy给准新娘的3个建议</h3>
+            <p><strong>1. 至少提前一个月试妆：</strong>试妆不仅是看效果，更是和化妆师磨合的过程。带上婚纱照片、喜欢的妆容参考图，和化妆师充分沟通。</p>
+            <p><strong>2. 婚礼前一周不要做任何面部项目：</strong>包括针清、去角质、尝试新产品等。此时皮肤状态稳定最重要。</p>
+            <p><strong>3. 前一天保证充足睡眠：</strong>再好的化妆品也比不上饱满的精神状态。敷个补水面膜，早点休息。</p>
+        `
+    },
+    2: {
+        tag: '持妆技巧',
+        title: '夏季持妆全攻略：8小时不脱妆的秘密',
+        date: '2026年5月8日',
+        reads: '1.8k',
+        body: `
+            <p>夏天化妆最怕什么？<strong>脱妆、浮粉、斑驳、出油。</strong>早上花一小时精心化的妆，出门两小时就面目全非。作为专业化妆师，Wendy今天就把压箱底的持妆秘籍全部公开，从妆前护肤到最后一层定妆，每一步都有讲究。</p>
+
+            <h3>第一步：妆前护肤要做减法</h3>
+            <p>很多人觉得夏天出油要多涂控油产品，结果越控越油。原因是皮肤感到干燥反而会分泌更多油脂。正确做法是：<strong>精简护肤步骤，做好基础保湿即可</strong>。水→精华→乳液，每层充分吸收后再涂下一层。护肤完成后等待3-5分钟，用手背贴脸感受——微黏但不油腻，这才是最佳上妆状态。</p>
+            <div class="tip-box"><strong>💡 Wendy的小提示</strong>T区爱出油的部位，护肤时乳液只需轻轻带过，不要厚涂。妆前乳也分区域使用：T区用控油型，脸颊用保湿型。</div>
+
+            <h3>第二步：粉底要"少量多次"</h3>
+            <p>夏季粉底最忌厚涂。挤出黄豆大小的量，先用手指在脸上点开，再用湿润的美妆蛋从面中向外拍开。注意是"拍"不是"抹"——拍打能让粉底和皮肤融为一体。第一层打底后，需要遮瑕的部位再局部叠加第二层，不要全脸堆叠。</p>
+            <p>粉底选择上，夏季推荐防水型或长效持妆型产品。如果本身肤质好，可以直接用带润色效果的防晒+局部遮瑕替代全脸粉底。</p>
+
+            <h3>第三步：定妆也要分区域</h3>
+            <p>这是最关键的一步，也是专业化妆师和普通人的区别所在：<strong>不同区域用不同方法定妆</strong>。</p>
+            <ul>
+                <li><strong>T区（额头+鼻子）：</strong>用粉扑蘸取透明散粉，揉搓均匀后用力按压在皮肤上。不是扫，是按！让粉和底妆"焊"在一起。</li>
+                <li><strong>眼下+鼻翼：</strong>用小号刷子蘸取散粉，轻轻按压定妆。这两个地方最容易卡粉积线，粉量一定要少。</li>
+                <li><strong>脸颊+下巴：</strong>用大号刷子轻扫即可，保留皮肤自然光泽。</li>
+            </ul>
+
+            <h3>第四步：定妆喷雾的正确用法</h3>
+            <p>不是简单喷一下就行。正确方法是：底妆完成喷一层→等干→全妆完成再喷一层。喷的时候距离面部30cm左右，呈X形和T形两次喷，均匀覆盖全脸。</p>
+
+            <h3>随身必备补妆三件套</h3>
+            <p>再好的定妆也扛不住全天候的考验，补妆技巧同样重要：</p>
+            <ul>
+                <li><strong>吸油纸（不是吸油面纸）：</strong>出油时先按压吸掉多余油脂，不要直接扑粉——油+粉=搓泥。</li>
+                <li><strong>透明蜜粉饼：</strong>吸油后用粉扑蘸取少量，按压在出油区域。</li>
+                <li><strong>口红/唇釉：</strong>饭后补涂，保持精致。</li>
+            </ul>
+        `
+    },
+    3: {
+        tag: '妆前护肤',
+        title: '妆前护肤黄金法则：底妆服帖一整天的秘诀',
+        date: '2026年4月28日',
+        reads: '3.1k',
+        body: `
+            <p>很多客人问我："Wendy，为什么你化的底妆那么服帖，我自己化总是浮粉卡纹？"答案其实不在化妆品上，<strong>而在化妆前的护肤步骤里</strong>。好的妆容七分靠护肤，三分才靠产品手法。</p>
+
+            <h3>妆前护肤≠日常护肤</h3>
+            <p>妆前护肤的目标很明确：<strong>让皮肤水润充盈、表面平滑、不油腻</strong>。这和睡前护肤的"滋养修护"目的完全不同。妆前护肤产品选错了，底妆灾难现场就是必然结果。</p>
+
+            <h3>黄金法则一：清洁到位但不刺激</h3>
+            <p>早晨用温和的氨基酸洁面产品洗脸即可，不需要强力清洁或去角质。如果前一晚做好了晚间护肤，早上甚至可以用清水洗。过度清洁会破坏皮脂膜，皮肤反而干燥紧绷，粉底一上去就卡。</p>
+
+            <h3>黄金法则二：化妆水要拍三遍</h3>
+            <p>不是夸张，韩国化妆师的"七水法"核心就是这个原理：每次倒少量化妆水在掌心，轻拍至吸收后再拍第二遍，共三遍。皮肤含水量充分后自然饱满，细纹和毛孔都会暂时"隐形"。每一遍之间等10秒让皮肤吸收。</p>
+            <div class="tip-box"><strong>💡 Wendy的小提示</strong>选择成分简单的保湿型化妆水即可，避免含酒精、果酸等刺激成分的产品。妆前不是刷酸的时候。</div>
+
+            <h3>黄金法则三：精华选"补水"不选"滋养"</h3>
+            <p>妆前精华首选透明质酸（玻尿酸）类补水精华，质地清爽好吸收。粘稠的抗老精华、油状的修复精华留给晚上，白天用会和后续防晒、粉底搓泥。取两泵精华在手心搓开，按压上脸，利用手心的温度帮助吸收。</p>
+
+            <h3>黄金法则四：乳液/面霜看肤质选</h3>
+            <p>油皮选乳液，干皮选轻薄面霜。取适量在手心搓开再按压上脸，不要直接在脸上点五坨——那样有的地方多有的地方少，底妆自然不均匀。涂完后等3分钟让产品充分吸收，再摸脸应该是软软的但不粘手。</p>
+
+            <h3>黄金法则五：防晒是最后一步护肤</h3>
+            <p>防晒不仅是护肤必需，也是底妆的"底漆"。选一款成膜快、不泛白、不搓泥的防晒霜，涂完后等5-10分钟成膜再上妆前乳和粉底。这一步千万别急——防晒没成膜就上粉底，必搓泥。</p>
+
+            <h3>不同肤质的妆前重点</h3>
+            <ul>
+                <li><strong>干皮：</strong>重点是补水补油，妆前可以加一滴护肤油混合在粉底里，底妆更贴。</li>
+                <li><strong>油皮：</strong>重点是控油不拔干。选择清爽型产品，T区用控油妆前乳局部打底。</li>
+                <li><strong>混合皮：</strong>分区护理。脸颊按干皮处理，T区按油皮处理。</li>
+                <li><strong>敏感皮：</strong>尽量精简步骤。化妆水+乳液即可，避免含香精酒精的产品。</li>
+            </ul>
+
+            <h3>妆前急救：15分钟急救法</h3>
+            <p>如果当天皮肤状态特别差（熬夜、干燥、暗沉），可以在洁面后敷一张保湿面膜10分钟，取下后按摩吸收，再用清水冲掉多余精华，然后按正常步骤护肤。这个方法能让皮肤瞬间回到水润状态，是化妆师后台的标配操作。</p>
+        `
+    }
+};
+
+// Blog card click → open article modal
+function initBlogCards() {
+    $$('.blog-card').forEach(card => {
+        card.addEventListener('click', () => {
+            const id = card.getAttribute('data-article');
+            const art = blogArticles[id];
+            if (!art) return;
+            $('#blogArticleContent').innerHTML = `
+                <div class="blog-art-header">
+                    <span class="blog-art-tag">${art.tag}</span>
+                    <h2 class="blog-art-title">${art.title}</h2>
+                    <div class="blog-art-meta">
+                        <span><i class="far fa-calendar"></i> ${art.date}</span>
+                        <span><i class="far fa-eye"></i> 阅读 ${art.reads}</span>
+                    </div>
+                </div>
+                <div class="blog-art-body">${art.body}</div>
+                <div class="blog-art-cta">
+                    <p>想让Wendy为你量身打造专属妆容？</p>
+                    <a href="#booking" class="btn-primary">立即预约妆容设计</a>
+                </div>
+            `;
+            $('#blogModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+    });
+
+    $('#closeBlogModal').addEventListener('click', () => {
+        $('#blogModal').classList.remove('active');
+        document.body.style.overflow = '';
+    });
+    $('#blogModal').addEventListener('click', (e) => {
+        if (e.target === $('#blogModal')) {
+            $('#blogModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    });
 }
 
 // ============ FAQ ACCORDION ============
@@ -1025,7 +1126,7 @@ $('#bookingSuccessModal').addEventListener('click', (e) => {
 function init() {
     renderPortfolio();
     initTestimonials();
-    renderBlogPosts();
+    initBlogCards();
     startTestimonialAuto();
     // Initialize first FAQ item as open
     const firstFaq = $('.faq-item');
@@ -1048,6 +1149,10 @@ document.addEventListener('keydown', (e) => {
         }
         if ($('#myBookingsModal').classList.contains('active')) {
             $('#myBookingsModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
+        if ($('#blogModal').classList.contains('active')) {
+            $('#blogModal').classList.remove('active');
             document.body.style.overflow = '';
         }
     }
