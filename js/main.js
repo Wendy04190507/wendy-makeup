@@ -2,6 +2,55 @@
    WENDY MAKEUP STUDIO - Main JavaScript
    ============================================ */
 
+// ============ SUPABASE CONFIG ============
+const SUPABASE_URL = 'https://lphlhuyhvntgfrkslews.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxwaGxodXlodm50Z2Zya3NsZXdzIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODAxMTg3MzcsImV4cCI6MjA5NTY5NDczN30.Fd875TrmTMu8tJ4xgYvn_NeYtDpE16o3QetSMqp2SHA';
+let supabase = null;
+function getSupabase() {
+    if (SUPABASE_URL.includes('YOUR_PROJECT')) return null;
+    if (!supabase && window.supabase) {
+        try { supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY); }
+        catch(e) { console.warn('Supabase init failed:', e); }
+    }
+    return supabase;
+}
+
+async function supabaseSaveBooking(booking) {
+    const client = getSupabase();
+    if (!client) return;
+    try {
+        const { error } = await client.from('bookings').insert({
+            id: booking.id,
+            service: booking.service,
+            service_name: booking.serviceName,
+            price: booking.servicePrice,
+            date: booking.date,
+            time: booking.time,
+            name: booking.name,
+            phone: booking.phone,
+            wechat: booking.wechat || '',
+            email: booking.email || '',
+            location: booking.location,
+            note: booking.note || '',
+            status: booking.status,
+            created_at: booking.createdAt
+        });
+        if (error) console.warn('Supabase save error:', error.message);
+    } catch(e) { console.warn('Supabase save failed:', e); }
+}
+
+async function supabaseGetBookedSlots(dateStr) {
+    const client = getSupabase();
+    if (!client) return [];
+    try {
+        const { data } = await client.from('bookings')
+            .select('time')
+            .eq('date', dateStr)
+            .neq('status', 'cancelled');
+        return (data || []).map(b => b.time);
+    } catch(e) { return []; }
+}
+
 // ============ UTILITY FUNCTIONS ============
 const $ = (sel, ctx = document) => ctx.querySelector(sel);
 const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
@@ -369,10 +418,12 @@ function saveBookings(bookings) {
     localStorage.setItem('wendy_bookings', JSON.stringify(bookings));
 }
 
-function getBookedSlots(dateStr) {
-    return getStoredBookings()
+async function getBookedSlots(dateStr) {
+    const localSlots = getStoredBookings()
         .filter(b => b.date === dateStr && b.status !== 'cancelled')
         .map(b => b.time);
+    const cloudSlots = await supabaseGetBookedSlots(dateStr);
+    return [...new Set([...localSlots, ...cloudSlots])];
 }
 
 // Step navigation
@@ -491,9 +542,9 @@ function selectDate(dateObj, dateStr, btn) {
     updateStep2Button();
 }
 
-function renderTimeSlots(dateStr) {
+async function renderTimeSlots(dateStr) {
     const grid = $('#timeslotGrid');
-    const bookedSlots = getBookedSlots(dateStr);
+    const bookedSlots = await getBookedSlots(dateStr);
 
     // Filter out past times for today
     const now = new Date();
@@ -644,7 +695,7 @@ function updateBookingSummary() {
 
 $('#backToStep3').addEventListener('click', () => goToStep(3));
 
-$('#confirmBooking').addEventListener('click', () => {
+$('#confirmBooking').addEventListener('click', async () => {
     const bookingId = generateId();
     const newBooking = {
         id: bookingId,
@@ -656,6 +707,9 @@ $('#confirmBooking').addEventListener('click', () => {
     const bookings = getStoredBookings();
     bookings.push(newBooking);
     saveBookings(bookings);
+
+    // Sync to Supabase cloud
+    await supabaseSaveBooking(newBooking);
 
     // Show success
     $('#modalBookingId').textContent = bookingId;

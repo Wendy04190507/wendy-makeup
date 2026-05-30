@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow">
+    <title>管理后台 | Wendy Makeup Studio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+    <!-- Login Screen -->
+    <div class="admin-login" id="adminLogin">
+        <div class="login-card">
+            <div class="login-logo">WENDY<span>.</span></div>
+            <h1>管理后台</h1>
+            <p>请输入管理密码以查看预约</p>
+            <form id="loginForm">
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="adminPassword" placeholder="管理密码" required autofocus>
+                </div>
+                <button type="submit" class="btn-login">登 录</button>
+            </form>
+            <p class="login-hint">默认密码：wendy2026（首次登录后建议修改）</p>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard (hidden before login) -->
+    <div class="admin-dashboard" id="adminDashboard" style="display:none;">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-brand">
+                <a href="../index.html" target="_blank">WENDY<span>.</span></a>
+                <span class="sidebar-sub">管理后台</span>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="#overview" class="nav-item active" data-page="overview">
+                    <i class="fas fa-chart-pie"></i> 数据概览
+                </a>
+                <a href="#bookings" class="nav-item" data-page="bookings">
+                    <i class="fas fa-calendar-check"></i> 所有预约
+                </a>
+                <a href="#settings" class="nav-item" data-page="settings">
+                    <i class="fas fa-cog"></i> 设置
+                </a>
+            </nav>
+            <div class="sidebar-footer">
+                <button class="btn-logout" id="btnLogout">
+                    <i class="fas fa-sign-out-alt"></i> 退出登录
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="btn-sidebar-toggle" id="btnSidebarToggle">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                    <h2 class="page-title" id="pageTitle">数据概览</h2>
+                </div>
+                <div class="topbar-right">
+                    <span class="topbar-time" id="topbarTime"></span>
+                    <a href="../index.html" target="_blank" class="btn-view-site">
+                        <i class="fas fa-external-link-alt"></i> 查看网站
+                    </a>
+                </div>
+            </header>
+
+            <!-- Page: Overview -->
+            <div class="page-content active" id="page-overview">
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background:rgba(201,169,110,0.15);color:#c9a96e;">
+                            <i class="fas fa-calendar-day"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="statToday">0</span>
+                            <span class="stat-label">今日预约</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background:rgba(124,184,158,0.15);color:#7cb89e;">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="statConfirmed">0</span>
+                            <span class="stat-label">已确认</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background:rgba(183,110,121,0.15);color:#b76e79;">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="statPending">0</span>
+                            <span class="stat-label">待确认</span>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon" style="background:rgba(100,140,200,0.15);color:#648cc8;">
+                            <i class="fas fa-yen-sign"></i>
+                        </div>
+                        <div class="stat-info">
+                            <span class="stat-value" id="statRevenue">¥0</span>
+                            <span class="stat-label">本月预估收入</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="overview-grid">
+                    <div class="overview-card">
+                        <h3><i class="fas fa-list"></i> 最近预约</h3>
+                        <div class="recent-bookings" id="recentBookings">
+                            <p class="empty-state">暂无预约记录</p>
+                        </div>
+                    </div>
+                    <div class="overview-card">
+                        <h3><i class="fas fa-chart-bar"></i> 服务分布</h3>
+                        <div class="service-chart" id="serviceChart">
+                            <p class="empty-state">暂无数据</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page: All Bookings -->
+            <div class="page-content" id="page-bookings">
+                <!-- Filters -->
+                <div class="bookings-toolbar">
+                    <div class="filter-group">
+                        <select id="filterStatus">
+                            <option value="all">全部状态</option>
+                            <option value="pending">待确认</option>
+                            <option value="confirmed">已确认</option>
+                            <option value="completed">已完成</option>
+                            <option value="cancelled">已取消</option>
+                        </select>
+                        <select id="filterService">
+                            <option value="all">全部服务</option>
+                            <option value="bridal">新娘妆容造型</option>
+                            <option value="evening">晚宴/派对妆容</option>
+                            <option value="commercial">商业拍摄妆容</option>
+                            <option value="personal">个人形象设计</option>
+                            <option value="trial">试妆体验</option>
+                            <option value="group">团体造型服务</option>
+                        </select>
+                        <input type="date" id="filterDate" placeholder="按日期筛选">
+                        <input type="text" id="filterSearch" placeholder="🔍 搜索客户姓名/手机号...">
+                    </div>
+                    <div class="toolbar-actions">
+                        <button class="btn-export" id="btnExport">
+                            <i class="fas fa-download"></i> 导出Excel
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Bookings Table -->
+                <div class="bookings-table-wrapper">
+                    <table class="bookings-table" id="bookingsTable">
+                        <thead>
+                            <tr>
+                                <th>预约编号</th>
+                                <th>客户</th>
+                                <th>服务项目</th>
+                                <th>日期</th>
+                                <th>时间</th>
+                                <th>价格</th>
+                                <th>状态</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="bookingsTableBody">
+                            <tr class="empty-row">
+                                <td colspan="8">暂无预约记录</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Pagination -->
+                <div class="pagination" id="pagination"></div>
+            </div>
+
+            <!-- Page: Settings -->
+            <div class="page-content" id="page-settings">
+                <div class="settings-card">
+                    <h3><i class="fas fa-lock"></i> 修改管理密码</h3>
+                    <form id="changePasswordForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>当前密码</label>
+                                <input type="password" id="currentPassword" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>新密码</label>
+                                <input type="password" id="newPassword" required minlength="6">
+                            </div>
+                            <div class="form-group">
+                                <label>确认新密码</label>
+                                <input type="password" id="confirmPassword" required minlength="6">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-save"></i> 保存修改
+                        </button>
+                    </form>
+                </div>
+
+                <div class="settings-card">
+                    <h3><i class="fas fa-database"></i> 数据管理</h3>
+                    <p>所有预约数据安全存储在云数据库中，永久免费。</p>
+                    <div class="settings-info">
+                        <div class="info-row">
+                            <span>总预约数</span>
+                            <strong id="setTotalBookings">0</strong>
+                        </div>
+                        <div class="info-row">
+                            <span>数据库状态</span>
+                            <strong style="color:var(--color-success);">● 正常运行</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- Booking Detail Modal -->
+        <div class="modal-overlay" id="detailModal">
+            <div class="modal-content modal-large">
+                <div class="modal-header">
+                    <h3>预约详情</h3>
+                    <button class="modal-close" id="closeDetailModal">&times;</button>
+                </div>
+                <div class="modal-body" id="detailContent"></div>
+            </div>
+        </div>
+
+        <!-- Toast -->
+        <div class="toast-container" id="adminToast"></div>
+    </div>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>
