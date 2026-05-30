@@ -74,10 +74,21 @@ function generateId() {
 }
 
 // ============ PRELOADER ============
+function hidePreloader() {
+    const preloader = $('#preloader');
+    if (preloader && !preloader.classList.contains('hidden')) {
+        preloader.classList.add('hidden');
+    }
+}
+// 尽快隐藏：DOM 加载完就可以，不等慢的外部资源
+document.addEventListener('DOMContentLoaded', () => {
+    setTimeout(hidePreloader, 400);
+});
+// 兜底：3秒后无论如何强制隐藏
+setTimeout(hidePreloader, 3000);
+// 正常情况：所有资源加载完隐藏
 window.addEventListener('load', () => {
-    setTimeout(() => {
-        $('#preloader').classList.add('hidden');
-    }, 600);
+    setTimeout(hidePreloader, 200);
 });
 
 // ============ NAVIGATION ============
