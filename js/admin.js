@@ -491,27 +491,24 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
-// ============ SUPABASE INTEGRATION (when configured) ============
-let supabase = null;
-async function initSupabase() {
-    if (SUPABASE_URL.includes('YOUR_PROJECT')) return null; // Not configured yet
-    if (supabase) return supabase;
-    try {
-        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        return supabase;
-    } catch (e) {
-        console.warn('Supabase 未配置，使用本地存储模式');
-        return null;
-    }
+// ============ SUPABASE INTEGRATION (raw fetch, no SDK) ============
+function supabaseHeaders() {
+    return {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+        'Content-Type': 'application/json'
+    };
 }
 
-// Sync bookings from Supabase (if available)
+// Sync bookings from Supabase
 async function syncFromSupabase() {
-    const client = await initSupabase();
-    if (!client) return;
     try {
-        const { data, error } = await client.from('bookings').select('*').order('created_at', { ascending: false });
-        if (error) throw error;
+        const resp = await fetch(
+            SUPABASE_URL + '/rest/v1/bookings?select=*&order=created_at.desc',
+            { headers: supabaseHeaders() }
+        );
+        if (!resp.ok) return;
+        const data = await resp.json();
         if (data && data.length > 0) {
             // Map Supabase fields to local format
             const mapped = data.map(b => ({
@@ -539,12 +536,13 @@ async function syncFromSupabase() {
 
 // Update booking status in Supabase
 async function updateSupabaseStatus(bookingId, status) {
-    const client = await initSupabase();
-    if (!client) return;
     try {
-        await client.from('bookings').update({ status }).eq('id', bookingId);
+        await fetch(
+            SUPABASE_URL + '/rest/v1/bookings?id=eq.' + encodeURIComponent(bookingId),
+            { method: 'PATCH', headers: supabaseHeaders(), body: JSON.stringify({ status: status }) }
+        );
     } catch (e) {
-        console.warn('Supabase 更新失败:', e.message);
+        console.warn('Cloud update issue:', e.message);
     }
 }
 

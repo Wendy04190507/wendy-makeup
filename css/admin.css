@@ -19,8 +19,8 @@
     --color-error: #c97b7b;
     --color-warning: #d4a843;
 
-    --font-display: 'Playfair Display', 'Noto Sans SC', serif;
-    --font-body: 'Noto Sans SC', -apple-system, sans-serif;
+    --font-display: 'Georgia', 'Times New Roman', serif;
+    --font-body: 'PingFang SC', 'Microsoft YaHei', 'Hiragino Sans GB', -apple-system, sans-serif;
 
     --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
     --shadow-md: 0 8px 30px rgba(0,0,0,0.08);
