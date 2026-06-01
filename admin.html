@@ -21,7 +21,7 @@
                 </div>
                 <button type="submit" class="btn-login">登 录</button>
             </form>
-            <p class="login-hint">默认密码：wendy2026（首次登录后建议修改）</p>
+            <p class="login-hint">默认密码：Wendy0419（首次登录后建议修改）</p>
         </div>
     </div>
 
@@ -40,6 +40,15 @@
                 <a href="#bookings" class="nav-item" data-page="bookings">
                     <i class="fas fa-calendar-check"></i> 所有预约
                 </a>
+                <a href="#calendar" class="nav-item" data-page="calendar">
+                    <i class="fas fa-calendar-alt"></i> 预约日历
+                </a>
+                <a href="#clients" class="nav-item" data-page="clients">
+                    <i class="fas fa-user-friends"></i> 客户管理
+                </a>
+                <a href="#analytics" class="nav-item" data-page="analytics">
+                    <i class="fas fa-chart-line"></i> 数据分析
+                </a>
                 <a href="#settings" class="nav-item" data-page="settings">
                     <i class="fas fa-cog"></i> 设置
                 </a>
@@ -50,6 +59,9 @@
                 </button>
             </div>
         </aside>
+
+        <!-- Sidebar overlay for mobile -->
+        <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
         <!-- Main Content -->
         <main class="main-content">
@@ -62,6 +74,9 @@
                     <h2 class="page-title" id="pageTitle">数据概览</h2>
                 </div>
                 <div class="topbar-right">
+                    <button class="btn-dark-mode" id="btnDarkMode" title="切换暗色模式">
+                        <i class="fas fa-moon"></i>
+                    </button>
                     <span class="topbar-time" id="topbarTime"></span>
                     <a href="../index.html" target="_blank" class="btn-view-site">
                         <i class="fas fa-external-link-alt"></i> 查看网站
@@ -151,6 +166,9 @@
                         <input type="text" id="filterSearch" placeholder="🔍 搜索客户姓名/手机号...">
                     </div>
                     <div class="toolbar-actions">
+                        <button class="btn-bulk-confirm" id="btnBulkConfirm" disabled>
+                            <i class="fas fa-check-double"></i> 批量确认
+                        </button>
                         <button class="btn-export" id="btnExport">
                             <i class="fas fa-download"></i> 导出Excel
                         </button>
@@ -162,6 +180,7 @@
                     <table class="bookings-table" id="bookingsTable">
                         <thead>
                             <tr>
+                                <th><input type="checkbox" id="selectAllBookings" title="全选"></th>
                                 <th>预约编号</th>
                                 <th>客户</th>
                                 <th>服务项目</th>
@@ -174,7 +193,7 @@
                         </thead>
                         <tbody id="bookingsTableBody">
                             <tr class="empty-row">
-                                <td colspan="8">暂无预约记录</td>
+                                <td colspan="9">暂无预约记录</td>
                             </tr>
                         </tbody>
                     </table>
@@ -182,6 +201,100 @@
 
                 <!-- Pagination -->
                 <div class="pagination" id="pagination"></div>
+            </div>
+
+            <!-- Page: Calendar -->
+            <div class="page-content" id="page-calendar">
+                <div class="calendar-view-card">
+                    <div class="calendar-view-header">
+                        <h3><i class="fas fa-calendar-alt"></i> 预约日历视图</h3>
+                        <div class="calendar-view-nav">
+                            <button class="btn-cal-nav" id="calViewPrev"><i class="fas fa-chevron-left"></i></button>
+                            <span class="cal-view-month" id="calViewMonth"></span>
+                            <button class="btn-cal-nav" id="calViewNext"><i class="fas fa-chevron-right"></i></button>
+                            <button class="btn-cal-today" id="calViewToday">今天</button>
+                        </div>
+                    </div>
+                    <div class="calendar-view-legend">
+                        <span><span class="legend-dot" style="background:#c9a96e;"></span> 待确认</span>
+                        <span><span class="legend-dot" style="background:#7cb89e;"></span> 已确认</span>
+                        <span><span class="legend-dot" style="background:#648cc8;"></span> 已完成</span>
+                        <span><span class="legend-dot" style="background:#b76e79;"></span> 已取消</span>
+                    </div>
+                    <div class="calendar-grid-weekdays">
+                        <span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>
+                    </div>
+                    <div class="calendar-grid-days" id="calendarGridDays"></div>
+                    <div class="calendar-day-detail" id="calendarDayDetail">
+                        <p class="empty-state">点击日期查看当天预约详情</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Page: Clients -->
+            <div class="page-content" id="page-clients">
+                <div class="bookings-toolbar">
+                    <div class="filter-group">
+                        <input type="text" id="clientSearch" placeholder="🔍 搜索客户姓名/手机号/微信...">
+                    </div>
+                    <div class="toolbar-actions">
+                        <span class="client-count" id="clientCount">共 0 位客户</span>
+                    </div>
+                </div>
+                <div class="clients-grid" id="clientsGrid">
+                    <p class="empty-state">暂无客户数据</p>
+                </div>
+            </div>
+
+            <!-- Page: Analytics -->
+            <div class="page-content" id="page-analytics">
+                <div class="analytics-grid">
+                    <div class="analytics-card analytics-card-wide">
+                        <h3><i class="fas fa-chart-bar"></i> 月度收入趋势</h3>
+                        <div class="chart-container" id="revenueChart">
+                            <p class="empty-state">暂无足够数据</p>
+                        </div>
+                    </div>
+                    <div class="analytics-card">
+                        <h3><i class="fas fa-chart-pie"></i> 服务占比</h3>
+                        <div class="chart-container" id="servicePieChart">
+                            <p class="empty-state">暂无数据</p>
+                        </div>
+                    </div>
+                    <div class="analytics-card">
+                        <h3><i class="fas fa-clock"></i> 热门时段</h3>
+                        <div class="chart-container" id="timeSlotChart">
+                            <p class="empty-state">暂无数据</p>
+                        </div>
+                    </div>
+                    <div class="analytics-card">
+                        <h3><i class="fas fa-calendar-check"></i> 转化率</h3>
+                        <div class="analytics-kpi" id="conversionRate">
+                            <span class="kpi-value">0%</span>
+                            <span class="kpi-label">预约→确认转化率</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="analytics-card analytics-card-wide" style="margin-top:20px;">
+                    <h3><i class="fas fa-table"></i> 月度汇总表</h3>
+                    <div class="table-responsive">
+                        <table class="bookings-table" id="monthlySummaryTable">
+                            <thead>
+                                <tr>
+                                    <th>月份</th>
+                                    <th>总预约</th>
+                                    <th>已确认</th>
+                                    <th>已完成</th>
+                                    <th>已取消</th>
+                                    <th>预估收入</th>
+                                </tr>
+                            </thead>
+                            <tbody id="monthlySummaryBody">
+                                <tr class="empty-row"><td colspan="6">暂无数据</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
             </div>
 
             <!-- Page: Settings -->
