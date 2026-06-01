@@ -229,14 +229,14 @@ backToTopBtn.addEventListener('click', () => {
 
 // ============ PORTFOLIO ============
 const portfolioData = [
-    { id: 1,  cat: 'bridal',    title: '中式新娘造型', desc: '传统秀禾服造型', img: 'img/中式新娘造型.JPG' },
-    { id: 2,  cat: 'bridal',    title: '韩式新娘造型', desc: '水光透亮韩式妆容', img: 'img/韩式新娘造型.JPG' },
-    { id: 3,  cat: 'evening',   title: '红毯晚宴妆',   desc: '高级感红毯妆容', img: 'img/红毯晚宴妆.JPG' },
-    { id: 4,  cat: 'evening',   title: '年会派对妆',   desc: '闪耀吸睛派对造型', img: 'img/年会派对妆.JPG' },
-    { id: 5,  cat: 'evening',   title: '名媛晚宴妆',   desc: '优雅名媛风妆容', img: 'img/名媛晚宴妆.JPG' },
-    { id: 6,  cat: 'commercial',title: '时尚杂志妆',   desc: '商业杂志封面妆容', img: 'img/时尚杂志妆.JPG' },
-    { id: 7,  cat: 'commercial',title: '品牌广告妆',   desc: '高端品牌广告造型', img: 'img/品牌广告妆.JPG' },
-    { id: 8,  cat: 'creative',  title: '创意艺术妆',   desc: '前卫创意妆容设计', img: 'img/创意艺术妆.JPG' },
+    { id: 1,  cat: 'bridal',    title: '中式新娘造型', desc: '传统秀禾服造型', img: 'img/中式新娘造型.JPG', thumb: 'img/thumb/中式新娘造型-thumb.jpg' },
+    { id: 2,  cat: 'bridal',    title: '韩式新娘造型', desc: '水光透亮韩式妆容', img: 'img/韩式新娘造型.JPG', thumb: 'img/thumb/韩式新娘造型-thumb.jpg' },
+    { id: 3,  cat: 'evening',   title: '红毯晚宴妆',   desc: '高级感红毯妆容', img: 'img/红毯晚宴妆.JPG', thumb: 'img/thumb/红毯晚宴妆-thumb.jpg' },
+    { id: 4,  cat: 'evening',   title: '年会派对妆',   desc: '闪耀吸睛派对造型', img: 'img/年会派对妆.JPG', thumb: 'img/thumb/年会派对妆-thumb.jpg' },
+    { id: 5,  cat: 'evening',   title: '名媛晚宴妆',   desc: '优雅名媛风妆容', img: 'img/名媛晚宴妆.JPG', thumb: 'img/thumb/名媛晚宴妆-thumb.jpg' },
+    { id: 6,  cat: 'commercial',title: '时尚杂志妆',   desc: '商业杂志封面妆容', img: 'img/时尚杂志妆.JPG', thumb: 'img/thumb/时尚杂志妆-thumb.jpg' },
+    { id: 7,  cat: 'commercial',title: '品牌广告妆',   desc: '高端品牌广告造型', img: 'img/品牌广告妆.JPG', thumb: 'img/thumb/品牌广告妆-thumb.jpg' },
+    { id: 8,  cat: 'creative',  title: '创意艺术妆',   desc: '前卫创意妆容设计', img: 'img/创意艺术妆.JPG', thumb: 'img/thumb/创意艺术妆-thumb.jpg' },
     { id: 9,  cat: 'bridal',    title: '西式白纱造型', desc: '经典优雅白纱妆容', color1: '#d4c5c5', color2: '#e8d5d5', icon: 'fa-ring' },
     { id: 10, cat: 'bridal',    title: '户外婚礼造型', desc: '自然清新新娘妆', color1: '#a8c5a0', color2: '#c5d5c0', icon: 'fa-leaf' },
     { id: 11, cat: 'creative',  title: '时装周造型',   desc: 'T台秀场前卫造型', color1: '#16213e', color2: '#e94560', icon: 'fa-feather' },
@@ -254,9 +254,9 @@ function createPortfolioItem(item) {
     div.className = 'portfolio-item';
     div.setAttribute('data-cat', item.cat);
     if (item.img) {
-        // 真实照片
+        // 真实照片：网格用小缩略图，点击灯箱加载大图
         div.innerHTML = `
-            <img src="${item.img}" alt="${item.title}" class="portfolio-img" loading="lazy">
+            <img src="${item.thumb || item.img}" alt="${item.title}" class="portfolio-img" loading="lazy" decoding="async">
             <div class="portfolio-overlay">
                 <h4>${item.title}</h4>
                 <span>${item.desc}</span>
